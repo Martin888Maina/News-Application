@@ -4,7 +4,7 @@ function Header() {
   return (
     <header className="header">
       <div className="header-inner container">
-        <h1 className="header-logo">📰 NewsHub</h1>
+        <h1 className="header-logo">📰 News App</h1>
         <p className="header-tagline">Your daily dose of headlines</p>
       </div>
     </header>
