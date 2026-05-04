@@ -1,0 +1,22 @@
+.header {
+  background-color: #1a1a2e;
+  color: white;
+  padding: 1.5rem 0;
+  margin-bottom: 2rem;
+}
+
+.header-inner {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.header-logo {
+  font-size: 1.75rem;
+}
+
+.header-tagline {
+  color: #c0c0d0;
+  font-size: 0.95rem;
+}
