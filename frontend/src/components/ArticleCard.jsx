@@ -9,17 +9,25 @@ const PLACEHOLDER =
     </svg>`,
   );
 
-function ArticleCard({ article }) {
+function ArticleCard({ article, onSelect }) {
   const date = article.publishedAt
     ? new Date(article.publishedAt).toLocaleDateString()
     : '';
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onSelect(article);
+    }
+  };
+
   return (
-    <a
-      href={article.url}
-      target="_blank"
-      rel="noopener noreferrer"
+    <div
       className="article-card"
+      role="button"
+      tabIndex={0}
+      onClick={() => onSelect(article)}
+      onKeyDown={handleKeyDown}
     >
       <img
         src={article.urlToImage || PLACEHOLDER}
@@ -41,7 +49,7 @@ function ArticleCard({ article }) {
           <span>{date}</span>
         </div>
       </div>
-    </a>
+    </div>
   );
 }
 

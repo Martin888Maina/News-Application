@@ -3,6 +3,7 @@ import Header from './components/Header';
 import SearchBar from './components/SearchBar';
 import Filters from './components/Filters';
 import ArticleList from './components/ArticleList';
+import ArticleDetail from './components/ArticleDetail';
 import Loader from './components/Loader';
 import ErrorMessage from './components/ErrorMessage';
 import { fetchEverything, fetchTopHeadlines } from './services/api';
@@ -27,6 +28,8 @@ function App() {
     from: '',
     to: '',
   });
+
+  const [selectedArticle, setSelectedArticle] = useState(null);
 
   // Track which fetch is the latest so out-of-order responses can't overwrite newer state
   const requestIdRef = useRef(0);
@@ -95,7 +98,11 @@ function App() {
         {!error && (
           <>
             {!loading || articles.length > 0 ? (
-              <ArticleList articles={articles} query={activeQuery} />
+              <ArticleList
+                articles={articles}
+                query={activeQuery}
+                onSelect={setSelectedArticle}
+              />
             ) : null}
 
             {loading && <Loader />}
@@ -114,6 +121,13 @@ function App() {
           </>
         )}
       </main>
+
+      {selectedArticle && (
+        <ArticleDetail
+          article={selectedArticle}
+          onClose={() => setSelectedArticle(null)}
+        />
+      )}
     </>
   );
 }

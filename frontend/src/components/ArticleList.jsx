@@ -1,7 +1,7 @@
 import ArticleCard from './ArticleCard';
 import '../styles/ArticleList.css';
 
-function ArticleList({ articles, query }) {
+function ArticleList({ articles, query, onSelect }) {
   if (!articles.length) {
     return (
       <p className="no-articles">
@@ -15,7 +15,11 @@ function ArticleList({ articles, query }) {
   return (
     <div className="article-grid">
       {articles.map((article, idx) => (
-        <ArticleCard key={`${article.url}-${idx}`} article={article} />
+        <ArticleCard
+          key={`${article.url}-${idx}`}
+          article={article}
+          onSelect={onSelect}
+        />
       ))}
     </div>
   );
