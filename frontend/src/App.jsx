@@ -30,6 +30,7 @@ function App() {
   });
 
   const [selectedArticle, setSelectedArticle] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   // Track which fetch is the latest so out-of-order responses can't overwrite newer state
   const requestIdRef = useRef(0);
@@ -56,7 +57,12 @@ function App() {
         if (reqId !== requestIdRef.current) return;
 
         const incoming = data.articles || [];
-        setArticles((prev) => (append ? [...prev, ...incoming] : incoming));
+        setArticles((prev) => {
+          const next = append ? [...prev, ...incoming] : incoming;
+          return next;
+        });
+        if (!append) setVisibleCount(PAGE_SIZE);
+        else setVisibleCount((prev) => prev + incoming.length);
         setTotalResults(data.totalResults || 0);
         setPage(nextPage);
         setActiveQuery(q);
@@ -84,7 +90,14 @@ function App() {
     runSearch(activeQuery, filters, page + 1, true);
   };
 
+  const handleShowLess = () => {
+    setVisibleCount((prev) => Math.max(PAGE_SIZE, prev - PAGE_SIZE));
+    setPage((prev) => Math.max(1, prev - 1));
+  };
+
+  const visibleArticles = articles.slice(0, visibleCount);
   const hasMore = articles.length < totalResults;
+  const canShowLess = visibleCount > PAGE_SIZE;
 
   return (
     <>
@@ -97,9 +110,9 @@ function App() {
 
         {!error && (
           <>
-            {!loading || articles.length > 0 ? (
+            {!loading || visibleArticles.length > 0 ? (
               <ArticleList
-                articles={articles}
+                articles={visibleArticles}
                 query={activeQuery}
                 onSelect={setSelectedArticle}
               />
@@ -107,15 +120,26 @@ function App() {
 
             {loading && <Loader />}
 
-            {!loading && articles.length > 0 && hasMore && (
+            {!loading && visibleArticles.length > 0 && (hasMore || canShowLess) && (
               <div className="load-more-wrapper">
-                <button
-                  type="button"
-                  className="load-more-button"
-                  onClick={handleLoadMore}
-                >
-                  Load more articles
-                </button>
+                {canShowLess && (
+                  <button
+                    type="button"
+                    className="load-more-button show-less-button"
+                    onClick={handleShowLess}
+                  >
+                    Show less
+                  </button>
+                )}
+                {hasMore && (
+                  <button
+                    type="button"
+                    className="load-more-button"
+                    onClick={handleLoadMore}
+                  >
+                    Load more articles
+                  </button>
+                )}
               </div>
             )}
           </>

@@ -30,7 +30,9 @@ a {
 .load-more-wrapper {
   display: flex;
   justify-content: center;
+  gap: 0.75rem;
   margin: 2rem 0 1rem;
+  flex-wrap: wrap;
 }
 
 .load-more-button {
@@ -52,4 +54,15 @@ a {
 .load-more-button:focus-visible {
   outline: 3px solid #6c6cff;
   outline-offset: 2px;
+}
+
+.show-less-button {
+  background: #f5f7fa;
+  color: #555;
+  border-color: #ccc;
+}
+
+.show-less-button:hover {
+  background: #e8eaed;
+  color: #333;
 }
