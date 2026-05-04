@@ -1,23 +1,21 @@
-import { useState } from 'react';
 import '../styles/SearchBar.css';
 
-function SearchBar({ onSearch }) {
-  const [query, setQuery] = useState('');
-
+function SearchBar({ query, onChange, onSubmit }) {
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch(query);
+    onSubmit();
   };
 
   return (
-    <form className="search-bar" onSubmit={handleSubmit}>
+    <form className="search-bar" onSubmit={handleSubmit} role="search">
       <input
-        type="text"
+        type="search"
         className="search-input"
         placeholder="Search news (e.g. tesla, apple, climate)..."
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         aria-label="Search news articles"
+        autoComplete="off"
       />
       <button type="submit" className="search-button">
         Search

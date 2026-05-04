@@ -1,10 +1,14 @@
 import ArticleCard from './ArticleCard';
 import '../styles/ArticleList.css';
 
-function ArticleList({ articles }) {
+function ArticleList({ articles, query }) {
   if (!articles.length) {
     return (
-      <p className="no-articles">No articles found. Try searching above.</p>
+      <p className="no-articles">
+        {query
+          ? `No articles found for "${query}". Try a different search.`
+          : 'No articles to show.'}
+      </p>
     );
   }
 
